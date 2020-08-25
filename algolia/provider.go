@@ -24,10 +24,13 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("ALGOLIA_API_KEY", nil),
 			},
 		},
-		ResourcesMap:   map[string]*schema.Resource{
+
+		ResourcesMap: map[string]*schema.Resource{
 			"algolia_api_key": resourceApiKey(),
 		},
+
 		DataSourcesMap: map[string]*schema.Resource{},
+
 		ConfigureContextFunc: providerConfigure,
 	}
 }
