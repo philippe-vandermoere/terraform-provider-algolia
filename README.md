@@ -1,9 +1,7 @@
 # Terraform Provider Algolia
 
 This repository is a Algolia for a [Terraform](https://www.terraform.io) provider.
-
 The provider needs to be configured with the proper credentials before it can be used.
-
 
 ## Usage Example
 
@@ -22,7 +20,7 @@ resource "algolia_api_key" "example" {
 }
 ````
 
-Further usage [documentation](/docs/README.md) is available.
+Full usage [documentation](/docs/README.md).
 
 ## Developer
 
