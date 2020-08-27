@@ -1,32 +1,14 @@
 # Terraform Provider Algolia
 
-This repository is a Algolia for a [Terraform](https://www.terraform.io) provider.
-The provider needs to be configured with the proper credentials before it can be used.
+This repository is a Algolia provider for [Terraform](https://www.terraform.io).
 
-## Usage Example
-
-````hcl-terraform
-# Configure the Algolia Provider
-provider "algolia" {
-    application_id = "{your application id}"
-    api_key        = "{your api key}"
-}
-
-# Create a Algolia API key
-resource "algolia_api_key" "example" {
-  acl         = list("search")
-  description = "example"
-  indexes     = list("example*")
-}
-````
-
-Full usage [documentation](/docs/README.md).
+See [usage](https://registry.terraform.io/providers/philippe-vandermoere/algolia/latest/docs).
 
 ## Developer
 
 ### Requirements
 
-- [Terraform](https://www.terraform.io/downloads.html) >= 0.13.x
+- [Terraform](https://www.terraform.io/downloads.html) >= 0.13
 - [Go](https://golang.org/doc/install) >= 1.15
 
 ### Installation
