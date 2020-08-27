@@ -17,10 +17,12 @@ jobs:
           go-version: 1.15
       - name: Import GPG key
         id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v2
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" > gpg_private_key.asc
+          echo "${{ secrets.PASSPHRASE }}" > gpg_private_key.passphrase
+          gpg --batch --passphrase-file gpg_private_key.passphrase --import gpg_private_key.asc
+          rm -f gpg_private_key.asc gpg_private_key.passphrase
+          echo "::set-output name=fingerprint::$(gpg --list-secret-keys --keyid-format LONG | grep rsa | awk -F ' ' '{print $2}' | awk -F '/' '{print $2}')"
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
