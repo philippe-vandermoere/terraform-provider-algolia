@@ -2,6 +2,8 @@ package algolia
 
 import (
 	"context"
+	"strconv"
+	"time"
 
 	"github.com/algolia/algoliasearch-client-go/v3/algolia/search"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -15,9 +17,14 @@ func resourceApiKey() *schema.Resource {
 		UpdateContext: resourceApiKeyUpdate,
 		DeleteContext: resourceApiKeyDelete,
 		Importer: &schema.ResourceImporter{
-			StateContext: schema.ImportStatePassthroughContext,
+			StateContext: importApiKeyState,
 		},
 		Schema: map[string]*schema.Schema{
+			"key": {
+				Type:      schema.TypeString,
+				Computed:  true,
+				Sensitive: true,
+			},
 			"acl": {
 				Type:     schema.TypeSet,
 				Required: true,
@@ -55,7 +62,7 @@ func resourceApiKey() *schema.Resource {
 }
 
 func resourceApiKeyCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	res, err := m.(*search.Client).AddAPIKey(getAlgoliaKey(d))
+	res, err := m.(*search.Client).AddAPIKey(getAlgoliaSearchKey(d))
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -65,7 +72,11 @@ func resourceApiKeyCreate(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
-	d.SetId(res.Key)
+	if err := d.Set("key", res.Key); err != nil {
+		return diag.FromErr(err)
+	}
+
+	d.SetId(strconv.FormatInt(time.Now().Unix(), 10))
 
 	return resourceApiKeyRead(ctx, d, m)
 }
@@ -74,25 +85,15 @@ func resourceApiKeyRead(ctx context.Context, d *schema.ResourceData, m interface
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	key, err := m.(*search.Client).GetAPIKey(d.Id())
-	if err != nil {
-		d.SetId("")
+	if err := refreshApiKeyState(d, m); err != nil {
 		return diag.FromErr(err)
 	}
-
-	d.SetId(key.Value)
-	_ = d.Set("acl", key.ACL)
-	_ = d.Set("description", key.Description)
-	_ = d.Set("indexes", key.Indexes)
-	_ = d.Set("max_queries_per_ip_peer_hour", key.MaxQueriesPerIPPerHour)
-	_ = d.Set("max_hits_per_query", key.MaxHitsPerQuery)
-	_ = d.Set("referers", key.Referers)
 
 	return diags
 }
 
 func resourceApiKeyUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	res, err := m.(*search.Client).UpdateAPIKey(getAlgoliaKey(d))
+	res, err := m.(*search.Client).UpdateAPIKey(getAlgoliaSearchKey(d))
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -109,7 +110,7 @@ func resourceApiKeyDelete(ctx context.Context, d *schema.ResourceData, m interfa
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	res, err := m.(*search.Client).DeleteAPIKey(d.Id())
+	res, err := m.(*search.Client).DeleteAPIKey(d.Get("key").(string))
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -122,7 +123,55 @@ func resourceApiKeyDelete(ctx context.Context, d *schema.ResourceData, m interfa
 	return diags
 }
 
-func getAlgoliaKey(d *schema.ResourceData) search.Key {
+func importApiKeyState(ctx context.Context, d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+	if err := d.Set("key", d.Id()); err != nil {
+		return nil, err
+	}
+
+	d.SetId(strconv.FormatInt(time.Now().Unix(), 10))
+
+	if err := refreshApiKeyState(d, m); err != nil {
+		return nil, err
+	}
+
+	return []*schema.ResourceData{d}, nil
+}
+
+func refreshApiKeyState(d *schema.ResourceData, m interface{}) error {
+	key, err := m.(*search.Client).GetAPIKey(d.Get("key").(string))
+	if err != nil {
+		d.SetId("")
+		return err
+	}
+
+	if err := d.Set("acl", key.ACL); err != nil {
+		return err
+	}
+
+	if err := d.Set("description", key.Description); err != nil {
+		return err
+	}
+
+	if err := d.Set("indexes", key.Indexes); err != nil {
+		return err
+	}
+
+	if err := d.Set("max_queries_per_ip_peer_hour", key.MaxQueriesPerIPPerHour); err != nil {
+		return err
+	}
+
+	if err := d.Set("max_hits_per_query", key.MaxHitsPerQuery); err != nil {
+		return err
+	}
+
+	if err := d.Set("referers", key.Referers); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func getAlgoliaSearchKey(d *schema.ResourceData) search.Key {
 	var acl []string
 	if value := d.Get("acl"); value != nil {
 		for _, v := range value.(*schema.Set).List() {
@@ -145,7 +194,7 @@ func getAlgoliaKey(d *schema.ResourceData) search.Key {
 	}
 
 	return search.Key{
-		Value:                  d.Id(),
+		Value:                  d.Get("key").(string),
 		ACL:                    acl,
 		Description:            d.Get("description").(string),
 		Indexes:                indexes,
