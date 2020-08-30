@@ -14,7 +14,7 @@ resource "algolia_api_key" "example" {
 
 # Output the API Key
 output "api_key" {
-  value = algolia_api_key.example.id
+  value = algolia_api_key.example.key
 }
 ```
 
@@ -22,18 +22,18 @@ output "api_key" {
 
 The following arguments are supported:
 * `acl` - (Required) Specify the list of permissions associated to the key, the possible acls:
-  * search: Allows search.
-  * browse: Allows retrieval of all index contents via the browse API.
-  * addObject: Allows adding/updating an object in the index. (Copying/moving indices are also allowed with this permission).
-  * deleteObject: Allows deleting an existing object.
-  * deleteIndex: Allows deleting index content.
-  * settings: allows getting index settings.
-  * editSettings: Allows changing index settings.
-  * analytics: Allows retrieval of analytics through the analytics API.
-  * recommendation: Allows usage of the Personalization dashboard and the Recommendation API.
-  * listIndexes: Allows listing all accessible indices.
-  * logs: Allows getting the logs.
-  * see Unretrievable Attributes: Disables the unretrievabl eAttributes feature for all operations returning records.
+  * `search` Allows search.
+  * `browse` Allows retrieval of all index contents via the browse API.
+  * `addObject` Allows adding/updating an object in the index. (Copying/moving indices are also allowed with this permission).
+  * `deleteObject` Allows deleting an existing object.
+  * `deleteIndex` Allows deleting index content.
+  * `settings` allows getting index settings.
+  * `editSettings` Allows changing index settings.
+  * `analytics` Allows retrieval of analytics through the analytics API.
+  * `recommendation` Allows usage of the Personalization dashboard and the Recommendation API.
+  * `listIndexes` Allows listing all accessible indices.
+  * `logs` Allows getting the logs.
+  * `seeUnretrievableAttributes` Disables the unretrievable Attributes feature for all operations returning records.
 * `description` - (Required) Specify a description to describe where the key is used.
 * `indexes` - (Optional) Specify the list of targeted indices. You can target all indices starting with a prefix or ending with a suffix using the ‘*’ character. For example, “dev_*” matches all indices starting with “dev_” and “*_dev” matches all indices ending with “_dev”.
 * `max_queries_per_ip_peer_hour` - (Optional) Specify the maximum number of API calls allowed from an IP address per hour. Each time an API call is performed with this key, a check is performed. If the IP at the source of the call did more than this number of calls in the last hour, a 429 code is returned. This parameter can be used to protect you from attempts at retrieving your entire index contents by massively querying the index.
@@ -43,11 +43,11 @@ The following arguments are supported:
 ## Attributes Reference
 
 In addition to all arguments above, the following attributes are exported:
-* `id` - The API Key
+* `key` - The API Key
 
 ## Import
 
-Algolia API Key can be imported using the `id`
+Algolia API Key can be imported using the `key`
 
 ```shell
 terraform import algolia_api_key.example {my algolia api key}
