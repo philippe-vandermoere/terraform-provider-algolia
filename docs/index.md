@@ -17,11 +17,16 @@ provider "algolia" {
     api_key        = var.api_key
 }
 
+# Find Algolia index
+data "algolia_index" "example" {
+    name = "example"
+}
+
 # Create a Algolia API key
 resource "algolia_api_key" "example" {
   acl         = ["search"]
   description = "example"
-  indexes     = ["example"]
+  indexes     = [data.algolia_index.example.name]
 }
 ```
 
