@@ -57,10 +57,10 @@ func resourceApiKey() *schema.Resource {
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
 			},
-			"validity": &schema.Schema{
-				Type:        schema.TypeInt,
-				Optional:    true,
-				Default:     0,
+			"validity": {
+				Type:     schema.TypeInt,
+				Optional: true,
+				Default:  0,
 			},
 		},
 	}
