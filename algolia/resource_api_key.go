@@ -173,7 +173,7 @@ func refreshApiKeyState(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	if err := d.Set("validity", key.Validity); err != nil {
+	if err := d.Set("validity", key.Validity.Seconds()); err != nil {
 		return err
 	}
 
