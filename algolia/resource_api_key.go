@@ -57,6 +57,11 @@ func resourceApiKey() *schema.Resource {
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
 			},
+			"validity": &schema.Schema{
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Default:     0,
+			},
 		},
 	}
 }
@@ -168,6 +173,10 @@ func refreshApiKeyState(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
+	if err := d.Set("validity", key.Validity); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -201,5 +210,6 @@ func getAlgoliaSearchKey(d *schema.ResourceData) search.Key {
 		MaxQueriesPerIPPerHour: d.Get("max_queries_per_ip_peer_hour").(int),
 		MaxHitsPerQuery:        d.Get("max_hits_per_query").(int),
 		Referers:               referers,
+		Validity:               time.Duration(d.Get("validity").(int)) * time.Second,
 	}
 }
