@@ -16,7 +16,7 @@ TERRAFORM_PLUGINS_DIRECTORY=~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NA
 install: lint unit
 	mkdir -p ${TERRAFORM_PLUGINS_DIRECTORY}
 	go build -o ${TERRAFORM_PLUGINS_DIRECTORY}/terraform-provider-${NAME}
-	cd examples && rm -rf .terraform
+	cd examples && rm -rf .terraform && rm -f .terraform.lock.hcl
 	cd examples && terraform init
 
 lint:

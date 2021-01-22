@@ -11,6 +11,7 @@ terraform.tfplan
 terraform.tfstate
 ./*.tfstate
 .terraform/
+.terraform.lock.hcl
 bin/
 dist/
 vendor/
