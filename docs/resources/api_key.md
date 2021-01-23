@@ -36,6 +36,7 @@ The following arguments are supported:
   * `seeUnretrievableAttributes` Disables the unretrievable Attributes feature for all operations returning records.
 * `description` - (Required) Specify a description to describe where the key is used.
 * `indexes` - (Optional) Specify the list of targeted indices. You can target all indices starting with a prefix or ending with a suffix using the ‘*’ character. For example, “dev_*” matches all indices starting with “dev_” and “*_dev” matches all indices ending with “_dev”.
+* `max_queries_per_ip_peer_hour` - (Depreacted) Use `max_queries_per_ip_per_hour` instead.
 * `max_queries_per_ip_per_hour` - (Optional) Specify the maximum number of API calls allowed from an IP address per hour. Each time an API call is performed with this key, a check is performed. If the IP at the source of the call did more than this number of calls in the last hour, a 429 code is returned. This parameter can be used to protect you from attempts at retrieving your entire index contents by massively querying the index.
 * `max_hits_per_query` - (Optional) Specify the maximum number of hits this API key can retrieve in one call. This parameter can be used to protect you from attempts at retrieving your entire index contents by massively querying the index.
 * `referers` - (Optional) Specify the list of query parameters. You can force the query parameters for a query using the url string format. Example: “typoTolerance=strict&ignorePlurals=false”.
