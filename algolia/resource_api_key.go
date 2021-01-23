@@ -42,6 +42,12 @@ func resourceApiKey() *schema.Resource {
 				Set:      schema.HashString,
 			},
 			"max_queries_per_ip_peer_hour": {
+				Deprecated: "Use max_queries_per_ip_per_hour instead",
+				Type:       schema.TypeInt,
+				Optional:   true,
+				Default:    15000,
+			},
+			"max_queries_per_ip_per_hour": {
 				Type:     schema.TypeInt,
 				Optional: true,
 				Default:  15000,
@@ -161,7 +167,7 @@ func refreshApiKeyState(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	if err := d.Set("max_queries_per_ip_peer_hour", key.MaxQueriesPerIPPerHour); err != nil {
+	if err := d.Set("max_queries_per_ip_per_hour", key.MaxQueriesPerIPPerHour); err != nil {
 		return err
 	}
 
@@ -207,7 +213,7 @@ func getAlgoliaSearchKey(d *schema.ResourceData) search.Key {
 		ACL:                    acl,
 		Description:            d.Get("description").(string),
 		Indexes:                indexes,
-		MaxQueriesPerIPPerHour: d.Get("max_queries_per_ip_peer_hour").(int),
+		MaxQueriesPerIPPerHour: d.Get("max_queries_per_ip_per_hour").(int),
 		MaxHitsPerQuery:        d.Get("max_hits_per_query").(int),
 		Referers:               referers,
 		Validity:               time.Duration(d.Get("validity").(int)) * time.Second,
