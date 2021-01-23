@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.3.0...v0.4.0) (January 23, 2021)
+
+### Added
+
+- Resource `api_key`:
+  - new optional field `validity` to define the expiration date of key.
+  - new optional field `max_queries_per_ip_per_hour` in replacement of `max_queries_per_ip_peer_hour`
+
+### Deprecated
+
+- Resource `api_key`:
+  - field `max_queries_per_ip_peer_hour` is deprecated  and removed in 0.5.0
+
 ## [0.3.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.2.0...v0.3.0) (August 30, 2020)
 
 ### Added
