@@ -9,7 +9,7 @@ See [usage](https://registry.terraform.io/providers/philippe-vandermoere/algolia
 ### Requirements
 
 - [Terraform](https://www.terraform.io/downloads.html) >= 0.13
-- [Go](https://golang.org/doc/install) >= 1.15
+- [Go](https://golang.org/doc/install) >= 1.16
 
 ### Installation
 

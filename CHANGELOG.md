@@ -1,17 +1,31 @@
 # Changelog
 
+## [0.5.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.4.0...v0.5.0) (February 28, 2021)
+
+### Changed
+
+- Update go version to 1.16
+- Update algolia SDK to v3.16.0
+- Update terraform SDK to v2.4.4
+- Update golangci-lint to v1.37.1
+
+### Removed
+
+- Resource `api_key`:
+  - remove deprecated field `max_queries_per_ip_peer_hour`
+
 ## [0.4.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.3.0...v0.4.0) (January 23, 2021)
 
 ### Added
 
 - Resource `api_key`:
-  - new optional field `validity` to define the expiration date of key.
+  - new optional field `validity` to define the expiration date of key
   - new optional field `max_queries_per_ip_per_hour` in replacement of `max_queries_per_ip_peer_hour`
 
 ### Deprecated
 
 - Resource `api_key`:
-  - field `max_queries_per_ip_peer_hour` is deprecated  and removed in 0.5.0
+  - field `max_queries_per_ip_peer_hour` is deprecated and removed in 0.5.0
 
 ## [0.3.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.2.0...v0.3.0) (August 30, 2020)
 
@@ -21,7 +35,7 @@
 
 ### Changed
 
-- Move the generate Algolia Api Key from attribute `id` into the Sensitive attribute `key`.
+- Move the generate Algolia Api Key from attribute `id` into the Sensitive attribute `key`
 
 ## [0.2.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.1.0...v0.2.0) (August 27, 2020)
 
