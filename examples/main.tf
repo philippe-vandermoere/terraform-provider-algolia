@@ -11,7 +11,7 @@ terraform {
 provider "algolia" {}
 
 data "algolia_index" "example" {
-    name = "ctf_products_fr"
+    name = "test"
 }
 
 resource "algolia_api_key" "example" {
@@ -22,8 +22,4 @@ resource "algolia_api_key" "example" {
 
 output "api_key" {
     value = algolia_api_key.example.key
-}
-
-output "hits_per_page" {
-    value = data.algolia_index.example.settings[0]
 }

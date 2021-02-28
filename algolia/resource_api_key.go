@@ -41,12 +41,6 @@ func resourceApiKey() *schema.Resource {
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
 			},
-			"max_queries_per_ip_peer_hour": {
-				Deprecated: "Use max_queries_per_ip_per_hour instead",
-				Type:       schema.TypeInt,
-				Optional:   true,
-				Default:    15000,
-			},
 			"max_queries_per_ip_per_hour": {
 				Type:     schema.TypeInt,
 				Optional: true,
