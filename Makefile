@@ -20,7 +20,13 @@ install: lint unit
 	cd examples && terraform init
 
 lint:
-	 golangci-lint run
+	golangci-lint run
 
 unit:
 	go test ./algolia
+
+apply:
+	cd examples && terraform apply
+
+destroy:
+	cd examples && terraform destroy

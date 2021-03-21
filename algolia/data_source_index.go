@@ -29,7 +29,7 @@ func dataSourceIndex() *schema.Resource {
 							Set:      schema.HashString,
 							Computed: true,
 						},
-						"attributesfor_faceting": {
+						"attributes_for_faceting": {
 							Type:     schema.TypeSet,
 							Elem:     &schema.Schema{Type: schema.TypeString},
 							Set:      schema.HashString,
@@ -266,7 +266,6 @@ func dataSourceIndexRead(ctx context.Context, d *schema.ResourceData, m interfac
 		return diag.FromErr(err)
 	}
 
-	// always run
 	d.SetId(strconv.FormatInt(time.Now().Unix(), 10))
 
 	return diags
@@ -276,7 +275,7 @@ func flattenIndexSettings(settings search.Settings) *[]interface{} {
 	return &[]interface{}{
 		map[string]interface{}{
 			"searchable_attributes":                        settings.SearchableAttributes.Get(),
-			"attributesfor_faceting":                       settings.AttributesForFaceting.Get(),
+			"attributes_for_faceting":                      settings.AttributesForFaceting.Get(),
 			"unretrievable_attributes":                     settings.UnretrievableAttributes.Get(),
 			"attributes_to_retrieve":                       settings.AttributesToRetrieve.Get(),
 			"ranking":                                      settings.Ranking.Get(),

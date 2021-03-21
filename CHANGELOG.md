@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.6.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.5.0...v0.6.0) (March 21, 2021)
+
+### Added
+
+- New Resource: `index`
+
+### Fixed
+
+- Datasource `index`:
+  - rename `attributesfor_faceting` to attributes_for_faceting
+
 ## [0.5.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.4.0...v0.5.0) (February 28, 2021)
 
 ### Changed

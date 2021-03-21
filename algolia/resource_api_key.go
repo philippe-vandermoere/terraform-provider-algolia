@@ -182,21 +182,21 @@ func refreshApiKeyState(d *schema.ResourceData, m interface{}) error {
 
 func getAlgoliaSearchKey(d *schema.ResourceData) search.Key {
 	var acl []string
-	if value := d.Get("acl"); value != nil {
+	if value, ok := d.GetOk("acl"); ok {
 		for _, v := range value.(*schema.Set).List() {
 			acl = append(acl, v.(string))
 		}
 	}
 
 	var indexes []string
-	if value := d.Get("indexes"); value != nil {
+	if value, ok := d.GetOk("indexes"); ok {
 		for _, v := range value.(*schema.Set).List() {
 			indexes = append(indexes, v.(string))
 		}
 	}
 
 	var referers []string
-	if value := d.Get("referers"); value != nil {
+	if value, ok := d.GetOk("referers"); ok {
 		for _, v := range value.(*schema.Set).List() {
 			referers = append(referers, v.(string))
 		}
