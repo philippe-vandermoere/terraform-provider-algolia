@@ -3,7 +3,6 @@ package algolia
 import (
 	"context"
 	"fmt"
-	"reflect"
 	"strconv"
 	"time"
 
@@ -33,44 +32,49 @@ func resourceIndex() *schema.Resource {
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
 				Optional: true,
+				Computed: true,
 			},
 			"attributes_for_faceting": {
 				Type:     schema.TypeSet,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
 				Optional: true,
+				Computed: true,
 			},
 			"unretrievable_attributes": {
 				Type:     schema.TypeSet,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
 				Optional: true,
+				Computed: true,
 			},
 			"attributes_to_retrieve": {
-				Type:             schema.TypeSet,
-				Elem:             &schema.Schema{Type: schema.TypeString},
-				Set:              schema.HashString,
-				Optional:         true,
-				DiffSuppressFunc: diffIndexTypeSet,
+				Type:     schema.TypeSet,
+				Elem:     &schema.Schema{Type: schema.TypeString},
+				Set:      schema.HashString,
+				Optional: true,
+				Computed: true,
 			},
 			"ranking": {
-				Type:             schema.TypeSet,
-				Elem:             &schema.Schema{Type: schema.TypeString},
-				Set:              schema.HashString,
-				Optional:         true,
-				DiffSuppressFunc: diffIndexTypeSet,
+				Type:     schema.TypeSet,
+				Elem:     &schema.Schema{Type: schema.TypeString},
+				Set:      schema.HashString,
+				Optional: true,
+				Computed: true,
 			},
 			"custom_ranking": {
 				Type:     schema.TypeSet,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
 				Optional: true,
+				Computed: true,
 			},
 			"replicas": {
 				Type:     schema.TypeSet,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
 				Optional: true,
+				Computed: true,
 			},
 			"max_values_per_facet": {
 				Type:     schema.TypeInt,
@@ -301,10 +305,4 @@ func getIndexSettings(d *schema.ResourceData) search.Settings {
 		HitsPerPage:             opt.HitsPerPage(d.Get("hits_per_page").(int)),
 		PaginationLimitedTo:     opt.PaginationLimitedTo(d.Get("pagination_limited_to").(int)),
 	}
-}
-
-func diffIndexTypeSet(k, old, new string, d *schema.ResourceData) bool {
-	stateValue, configValue := d.GetChange(k)
-
-	return reflect.DeepEqual(stateValue, configValue)
 }

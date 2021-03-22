@@ -27,9 +27,9 @@ func resourceApiKey() *schema.Resource {
 			},
 			"acl": {
 				Type:     schema.TypeSet,
-				Required: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
+				Required: true,
 			},
 			"description": {
 				Type:     schema.TypeString,
@@ -37,9 +37,10 @@ func resourceApiKey() *schema.Resource {
 			},
 			"indexes": {
 				Type:     schema.TypeSet,
-				Optional: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
+				Optional: true,
+				Computed: true,
 			},
 			"max_queries_per_ip_per_hour": {
 				Type:     schema.TypeInt,
@@ -53,9 +54,10 @@ func resourceApiKey() *schema.Resource {
 			},
 			"referers": {
 				Type:     schema.TypeSet,
-				Optional: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
+				Optional: true,
+				Computed: true,
 			},
 			"validity": {
 				Type:     schema.TypeInt,
