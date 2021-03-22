@@ -22,11 +22,16 @@ data "algolia_index" "example" {
     name = "example"
 }
 
+# Create a Algolia index
+resource "algolia_index" "example" {
+  name = "example"
+}
+
 # Create a Algolia API key
 resource "algolia_api_key" "example" {
   acl         = ["search"]
   description = "example"
-  indexes     = [data.algolia_index.example.name]
+  indexes     = [algolia_index.example.name]
 }
 ```
 

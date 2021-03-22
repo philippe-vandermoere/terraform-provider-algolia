@@ -27,9 +27,9 @@ func resourceApiKey() *schema.Resource {
 			},
 			"acl": {
 				Type:     schema.TypeSet,
-				Required: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
+				Required: true,
 			},
 			"description": {
 				Type:     schema.TypeString,
@@ -37,9 +37,10 @@ func resourceApiKey() *schema.Resource {
 			},
 			"indexes": {
 				Type:     schema.TypeSet,
-				Optional: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
+				Optional: true,
+				Computed: true,
 			},
 			"max_queries_per_ip_per_hour": {
 				Type:     schema.TypeInt,
@@ -53,9 +54,10 @@ func resourceApiKey() *schema.Resource {
 			},
 			"referers": {
 				Type:     schema.TypeSet,
-				Optional: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 				Set:      schema.HashString,
+				Optional: true,
+				Computed: true,
 			},
 			"validity": {
 				Type:     schema.TypeInt,
@@ -182,21 +184,21 @@ func refreshApiKeyState(d *schema.ResourceData, m interface{}) error {
 
 func getAlgoliaSearchKey(d *schema.ResourceData) search.Key {
 	var acl []string
-	if value := d.Get("acl"); value != nil {
+	if value, ok := d.GetOk("acl"); ok {
 		for _, v := range value.(*schema.Set).List() {
 			acl = append(acl, v.(string))
 		}
 	}
 
 	var indexes []string
-	if value := d.Get("indexes"); value != nil {
+	if value, ok := d.GetOk("indexes"); ok {
 		for _, v := range value.(*schema.Set).List() {
 			indexes = append(indexes, v.(string))
 		}
 	}
 
 	var referers []string
-	if value := d.Get("referers"); value != nil {
+	if value, ok := d.GetOk("referers"); ok {
 		for _, v := range value.(*schema.Set).List() {
 			referers = append(referers, v.(string))
 		}
