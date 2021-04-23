@@ -219,6 +219,10 @@ func dataSourceIndex() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
+						"distinct": {
+							Type:     schema.TypeInt,
+							Computed: true,
+						},
 						"replace_synonyms_in_highlight": {
 							Type:     schema.TypeBool,
 							Computed: true,
@@ -272,6 +276,9 @@ func dataSourceIndexRead(ctx context.Context, d *schema.ResourceData, m interfac
 }
 
 func flattenIndexSettings(settings search.Settings) *[]interface{} {
+	// use returnedint value of distinct
+	_, distinct := settings.Distinct.Get()
+
 	return &[]interface{}{
 		map[string]interface{}{
 			"searchable_attributes":                        settings.SearchableAttributes.Get(),
@@ -313,6 +320,7 @@ func flattenIndexSettings(settings search.Settings) *[]interface{} {
 			"numeric_attributes_for_filtering":             settings.NumericAttributesForFiltering.Get(),
 			"allow_compression_of_integer_array":           settings.AllowCompressionOfIntegerArray.Get(),
 			"attribute_for_distinct":                       settings.AttributeForDistinct.Get(),
+			"distinct":                                     distinct,
 			"replace_synonyms_in_highlight":                settings.ReplaceSynonymsInHighlight.Get(),
 			"min_proximity":                                settings.MinProximity.Get(),
 			"max_facet_hits":                               settings.MaxFacetHits.Get(),

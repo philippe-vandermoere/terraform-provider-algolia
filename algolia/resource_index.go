@@ -100,6 +100,16 @@ func resourceIndex() *schema.Resource {
 				Optional: true,
 				Default:  1000,
 			},
+			"attribute_for_distinct": {
+				Type:     schema.TypeString,
+				Set:      schema.HashString,
+				Optional: true,
+			},
+			"distinct": {
+				Type:     schema.TypeInt,
+				Set:      schema.HashString,
+				Optional: true,
+			},
 		},
 	}
 }
@@ -239,6 +249,15 @@ func refreshIndexState(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
+	if err := d.Set("attribute_for_distinct", settings.AttributeForDistinct.Get()); err != nil {
+		return err
+	}
+
+	_, distinct := settings.Distinct.Get()
+	if err := d.Set("distinct", distinct); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -304,5 +323,7 @@ func getIndexSettings(d *schema.ResourceData) search.Settings {
 		SortFacetValuesBy:       opt.SortFacetValuesBy(d.Get("sort_facet_values_by").(string)),
 		HitsPerPage:             opt.HitsPerPage(d.Get("hits_per_page").(int)),
 		PaginationLimitedTo:     opt.PaginationLimitedTo(d.Get("pagination_limited_to").(int)),
+		AttributeForDistinct:    opt.AttributeForDistinct(d.Get("attribute_for_distinct").(string)),
+		Distinct:                opt.DistinctOf(d.Get("distinct").(int)),
 	}
 }
