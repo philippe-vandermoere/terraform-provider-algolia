@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.7.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.6.0...v0.4.0) (April 25, 2021)
+## [0.7.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.6.0...v0.7.0) (April 25, 2021)
 
 ### Added
 
