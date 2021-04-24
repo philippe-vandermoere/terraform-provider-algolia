@@ -46,6 +46,12 @@ resource "algolia_index" "example3_replica" {
     custom_ranking = ["asc(example)"]
 }
 
+resource "algolia_index" "example4_distinct" {
+    name                   = "example4_distinct"
+    distinct               = 2
+    attribute_for_distinct = "example"
+}
+
 resource "algolia_api_key" "example" {
     acl         = ["search"]
     description = "example"
