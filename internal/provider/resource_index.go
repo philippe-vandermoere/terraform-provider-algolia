@@ -1,4 +1,4 @@
-package algolia
+package provider
 
 import (
 	"context"
@@ -115,7 +115,7 @@ func resourceIndex() *schema.Resource {
 }
 
 func resourceIndexCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	index := m.(*search.Client).InitIndex(d.Get("name").(string))
+	index := m.(*apiClient).algolia.InitIndex(d.Get("name").(string))
 	exist, err := index.Exists()
 	if err != nil {
 		return diag.FromErr(err)
@@ -148,7 +148,7 @@ func resourceIndexRead(ctx context.Context, d *schema.ResourceData, m interface{
 }
 
 func resourceIndexUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	res, err := m.(*search.Client).InitIndex(d.Get("name").(string)).SetSettings(getIndexSettings(d))
+	res, err := m.(*apiClient).algolia.InitIndex(d.Get("name").(string)).SetSettings(getIndexSettings(d))
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -163,7 +163,7 @@ func resourceIndexUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 func resourceIndexDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	res, err := m.(*search.Client).InitIndex(d.Get("name").(string)).Delete()
+	res, err := m.(*apiClient).algolia.InitIndex(d.Get("name").(string)).Delete()
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -190,7 +190,7 @@ func importIndexState(ctx context.Context, d *schema.ResourceData, m interface{}
 }
 
 func refreshIndexState(d *schema.ResourceData, m interface{}) error {
-	index := m.(*search.Client).InitIndex(d.Get("name").(string))
+	index := m.(*apiClient).algolia.InitIndex(d.Get("name").(string))
 	exist, err := index.Exists()
 	if err != nil {
 		d.SetId("")
@@ -205,60 +205,23 @@ func refreshIndexState(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	if err := d.Set("searchable_attributes", settings.SearchableAttributes.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("attributes_for_faceting", settings.AttributesForFaceting.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("unretrievable_attributes", settings.UnretrievableAttributes.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("attributes_to_retrieve", settings.AttributesToRetrieve.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("ranking", settings.Ranking.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("custom_ranking", settings.CustomRanking.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("replicas", settings.Replicas.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("max_values_per_facet", settings.MaxValuesPerFacet.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("sort_facet_values_by", settings.SortFacetValuesBy.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("hits_per_page", settings.HitsPerPage.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("pagination_limited_to", settings.PaginationLimitedTo.Get()); err != nil {
-		return err
-	}
-
-	if err := d.Set("attribute_for_distinct", settings.AttributeForDistinct.Get()); err != nil {
-		return err
-	}
-
 	_, distinct := settings.Distinct.Get()
-	if err := d.Set("distinct", distinct); err != nil {
-		return err
-	}
 
-	return nil
+	return setValues(d, map[string]interface{}{
+		"searchable_attributes":    settings.SearchableAttributes.Get(),
+		"attributes_for_faceting":  settings.AttributesForFaceting.Get(),
+		"unretrievable_attributes": settings.UnretrievableAttributes.Get(),
+		"attributes_to_retrieve":   settings.AttributesToRetrieve.Get(),
+		"ranking":                  settings.Ranking.Get(),
+		"custom_ranking":           settings.CustomRanking.Get(),
+		"replicas":                 settings.Replicas.Get(),
+		"max_values_per_facet":     settings.MaxValuesPerFacet.Get(),
+		"sort_facet_values_by":     settings.SortFacetValuesBy.Get(),
+		"hits_per_page":            settings.HitsPerPage.Get(),
+		"pagination_limited_to":    settings.PaginationLimitedTo.Get(),
+		"attribute_for_distinct":   settings.AttributeForDistinct.Get(),
+		"distinct":                 distinct,
+	})
 }
 
 func getIndexSettings(d *schema.ResourceData) search.Settings {

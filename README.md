@@ -1,5 +1,10 @@
 # Terraform Provider Algolia
 
+[![licence](https://img.shields.io/github/license/philippe-vandermoere/terraform-provider-algolia)](./LICENSE)
+![test](https://github.com/philippe-vandermoere/terraform-provider-algolia/actions/workflows/test.yml/badge.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/philippe-vandermoere/terraform-provider-algolia)](https://goreportcard.com/report/github.com/philippe-vandermoere/terraform-provider-algolia)
+[![codecov](https://codecov.io/gh/philippe-vandermoere/terraform-provider-algolia/branch/main/graph/badge.svg?token=3O9O1LKS38)](https://codecov.io/gh/philippe-vandermoere/terraform-provider-algolia)
+
 This repository is a Algolia provider for [Terraform](https://www.terraform.io).
 
 See [usage](https://registry.terraform.io/providers/philippe-vandermoere/algolia/latest/docs).

@@ -1,4 +1,4 @@
-name: release
+name: Release
 on:
   push:
     tags:
@@ -9,20 +9,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Unshallow
+      - name: Git Unshallow
         run: git fetch --prune --unshallow
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15
+          go-version: '1.16'
       - name: Import GPG key
         id: import_gpg
-        run: |
-          echo "${{ secrets.GPG_PRIVATE_KEY }}" > gpg_private_key.asc
-          echo "${{ secrets.PASSPHRASE }}" > gpg_private_key.passphrase
-          gpg --batch --passphrase-file gpg_private_key.passphrase --import gpg_private_key.asc
-          rm -f gpg_private_key.asc gpg_private_key.passphrase
-          echo "::set-output name=fingerprint::$(gpg --list-secret-keys --keyid-format LONG | grep rsa | awk -F ' ' '{print $2}' | awk -F '/' '{print $2}')"
+        uses: hashicorp/ghaction-import-gpg@v2
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
