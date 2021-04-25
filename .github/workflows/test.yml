@@ -14,8 +14,8 @@ jobs:
         id: import_gpg
         uses: hashicorp/ghaction-import-gpg@v2
         env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY1 }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE1 }}
 
   lint:
     name: Lint
@@ -49,6 +49,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1
       fail-fast: false
       matrix:
         terraform_version:
