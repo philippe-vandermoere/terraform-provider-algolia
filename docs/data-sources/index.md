@@ -63,6 +63,7 @@ A `settings` block exports the following:
 * `numeric_attributes_for_filtering` - List of numeric attributes that can be used as numerical filters.
 * `allow_compression_of_integer_array` - Enables compression of large integer arrays.
 * `attribute_for_distinct` - Name of the de-duplication attribute to be used with the distinct feature.
+* `distinct` - Enables de-duplication or grouping of results. Set 0 to disable, 1 to enable. When N > 1 it enable grouping.
 * `replace_synonyms_in_highlight` - Whether to highlight and snippet the original word that matches the synonym or the synonym itself.
 * `min_proximity` - Precision of the proximity ranking criterion.
 * `max_facet_hits` - Maximum number of facet hits to return during a search for facet values.

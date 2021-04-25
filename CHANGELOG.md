@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.7.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.6.0...v0.7.0) (April 25, 2021)
+
+### Added
+
+- Resource `index`:
+  - new optional field `attribute_for_distinct` to define the name of the de-duplication attribute to be used with the distinct feature.
+  - new optional field `distinct` to enables de-duplication or grouping of results
+
+- Datasource `index`:
+  - new field `distinct`
+
+- CI:
+  - Implement build test
+  - Implement Terraform acceptance test
+  - Implement Codecov report
+  - Implement Github dependabot for go modules dependencies
+
+### Changed
+
+- Update algolia SDK to v3.18.1
+- Update terraform SDK to v2.6.1
+- Implement terraform best practice for provider:
+  - Rename provider golang namespace `algolia` to `internal/provider`
+  - Use apiClient struct for pass algoliaClient
+
 ## [0.6.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.5.0...v0.6.0) (March 21, 2021)
 
 ### Added
@@ -9,7 +34,7 @@
 ### Fixed
 
 - Datasource `index`:
-  - rename `attributesfor_faceting` to attributes_for_faceting
+  - rename `attributesfor_faceting` to `attributes_for_faceting`
 
 ## [0.5.0](https://github.com/philippe-vandermoere/terraform-provider-algolia/compare/v0.4.0...v0.5.0) (February 28, 2021)
 

@@ -40,6 +40,8 @@ The following arguments are supported:
 * `sort_facet_values_by` - (Optional) Controls how facet values are sorted.
 * `hits_per_page` - (Optional) Set the number of hits per page.
 * `pagination_limited_to` - (Optional) Set the maximum number of hits accessible via pagination.
+* `attribute_for_distinct` - (Optional) Name of the de-duplication attribute to be used with the distinct feature.
+* `distinct` - (Optional) Enables de-duplication or grouping of results. Set 0 to disable, 1 to enable. When N > 1 it enable grouping.
 
 ## Import
 
