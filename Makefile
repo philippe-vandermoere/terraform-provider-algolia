@@ -10,8 +10,8 @@ OS_ARCH=linux_amd64
 HOSTNAME=registry.terraform.io
 NAMESPACE=philippe-vandermoere
 NAME=algolia
-VERSION=dev
-TERRAFORM_PLUGINS_DIRECTORY=~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/dev/${OS_ARCH}
+VERSION=99.99.99
+TERRAFORM_PLUGINS_DIRECTORY=~/.terraform.d/plugins/${HOSTNAME}/${NAMESPACE}/${NAME}/${VERSION}/${OS_ARCH}
 
 install:
 	mkdir -p ${TERRAFORM_PLUGINS_DIRECTORY}
