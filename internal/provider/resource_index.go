@@ -1,4 +1,4 @@
-package algolia
+package provider
 
 import (
 	"context"
@@ -115,7 +115,7 @@ func resourceIndex() *schema.Resource {
 }
 
 func resourceIndexCreate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	index := m.(*search.Client).InitIndex(d.Get("name").(string))
+	index := m.(*apiClient).algolia.InitIndex(d.Get("name").(string))
 	exist, err := index.Exists()
 	if err != nil {
 		return diag.FromErr(err)
@@ -148,7 +148,7 @@ func resourceIndexRead(ctx context.Context, d *schema.ResourceData, m interface{
 }
 
 func resourceIndexUpdate(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	res, err := m.(*search.Client).InitIndex(d.Get("name").(string)).SetSettings(getIndexSettings(d))
+	res, err := m.(*apiClient).algolia.InitIndex(d.Get("name").(string)).SetSettings(getIndexSettings(d))
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -163,7 +163,7 @@ func resourceIndexUpdate(ctx context.Context, d *schema.ResourceData, m interfac
 func resourceIndexDelete(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	res, err := m.(*search.Client).InitIndex(d.Get("name").(string)).Delete()
+	res, err := m.(*apiClient).algolia.InitIndex(d.Get("name").(string)).Delete()
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -190,7 +190,7 @@ func importIndexState(ctx context.Context, d *schema.ResourceData, m interface{}
 }
 
 func refreshIndexState(d *schema.ResourceData, m interface{}) error {
-	index := m.(*search.Client).InitIndex(d.Get("name").(string))
+	index := m.(*apiClient).algolia.InitIndex(d.Get("name").(string))
 	exist, err := index.Exists()
 	if err != nil {
 		d.SetId("")

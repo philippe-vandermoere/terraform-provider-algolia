@@ -1,0 +1,78 @@
+name: Tests
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+  pull_request:
+
+jobs:
+  test_import_gpg:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Import GPG key
+        id: import_gpg
+        uses: hashicorp/ghaction-import-gpg@v2
+        env:
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+          PASSPHRASE: ${{ secrets.PASSPHRASE }}
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: 'v1.39.0'
+
+  build:
+    name: Build
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.16'
+      - name: Get dependencies
+        run: go mod download
+      - name: Build
+        run: go build -v .
+
+  test:
+    name: Matrix Test
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        terraform_version:
+          - '0.13.6'
+          - '0.14.10'
+          - '0.15.0'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.16'
+      - name: Get dependencies
+        run: go mod download
+      - name: Terraform acceptance tests
+        run: go test ./internal/provider/ -v -coverprofile=coverage.out
+        env:
+          TF_ACC: '1'
+          TF_ACC_TERRAFORM_VERSION: ${{ matrix.terraform_version }}
+          ALGOLIA_APPLICATION_ID: ${{ secrets.ALGOLIA_APPLICATION_ID }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.out
