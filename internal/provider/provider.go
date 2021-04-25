@@ -60,3 +60,13 @@ func configure(version string, p *schema.Provider) func(context.Context, *schema
 		return &apiClient{algolia: search.NewClientWithConfig(config)}, nil
 	}
 }
+
+func setValues(d *schema.ResourceData, values map[string]interface{}) error {
+	for k, v := range values {
+		if err := d.Set(k, v); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

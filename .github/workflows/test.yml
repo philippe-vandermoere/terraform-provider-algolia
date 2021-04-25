@@ -7,16 +7,6 @@ on:
   pull_request:
 
 jobs:
-  test_import_gpg:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Import GPG key
-        id: import_gpg
-        uses: hashicorp/ghaction-import-gpg@v2
-        env:
-          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY1 }}
-          PASSPHRASE: ${{ secrets.PASSPHRASE1 }}
-
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -45,7 +35,7 @@ jobs:
         run: go build -v .
 
   test:
-    name: Matrix Test
+    name: Terraform acceptance tests
     needs: build
     runs-on: ubuntu-latest
     strategy:

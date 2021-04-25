@@ -151,35 +151,15 @@ func refreshApiKeyState(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	if err := d.Set("acl", key.ACL); err != nil {
-		return err
-	}
-
-	if err := d.Set("description", key.Description); err != nil {
-		return err
-	}
-
-	if err := d.Set("indexes", key.Indexes); err != nil {
-		return err
-	}
-
-	if err := d.Set("max_queries_per_ip_per_hour", key.MaxQueriesPerIPPerHour); err != nil {
-		return err
-	}
-
-	if err := d.Set("max_hits_per_query", key.MaxHitsPerQuery); err != nil {
-		return err
-	}
-
-	if err := d.Set("referers", key.Referers); err != nil {
-		return err
-	}
-
-	if err := d.Set("validity", key.Validity.Seconds()); err != nil {
-		return err
-	}
-
-	return nil
+	return setValues(d, map[string]interface{}{
+		"acl":                         key.ACL,
+		"description":                 key.Description,
+		"indexes":                     key.Indexes,
+		"max_queries_per_ip_per_hour": key.MaxQueriesPerIPPerHour,
+		"max_hits_per_query":          key.MaxHitsPerQuery,
+		"referers":                    key.Referers,
+		"validity":                    key.Validity.Seconds(),
+	})
 }
 
 func getAlgoliaSearchKey(d *schema.ResourceData) search.Key {
